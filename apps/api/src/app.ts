@@ -36,3 +36,5 @@ app.use('/api/notifications', notificationsRouter);
 app.use('/api/internal/process-notifications', notificationProcessorRouter);
 app.use(notFound);
 app.use(errorHandler);
+
+export default app;
