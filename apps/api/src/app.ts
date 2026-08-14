@@ -14,9 +14,11 @@ import { calendarRouter } from './modules/calendar/calendar.routes.js';
 import { notificationsRouter } from './modules/notifications/notifications.routes.js';
 import { notificationProcessorRouter } from './modules/notifications/notification-processor.routes.js';
 
+const createHelmet = helmetModule.default as unknown as () => express.RequestHandler;
+
 export const app = express();
 app.disable('x-powered-by');
-app.use(helmetModule.default());
+app.use(createHelmet());
 app.use(cors({ origin: env.WEB_URL }));
 app.use(express.json({ limit: '100kb' }));
 app.use('/health', healthRouter);
