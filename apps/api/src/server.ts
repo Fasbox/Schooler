@@ -1,6 +1,10 @@
 import { app } from './app.js';
 import { env } from './config/env.js';
 
-app.listen(env.PORT, () => {
-  console.log(`Schooler API disponible en http://localhost:${env.PORT}`);
-});
+if (!process.env.VERCEL) {
+  app.listen(env.PORT, () => {
+    console.log(`Schooler API disponible en http://localhost:${env.PORT}`);
+  });
+}
+
+export default app;

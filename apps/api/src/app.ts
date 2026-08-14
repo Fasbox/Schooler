@@ -1,6 +1,5 @@
 import cors from 'cors';
 import express from 'express';
-import * as helmetModule from 'helmet';
 import { env } from './config/env.js';
 import { errorHandler, notFound } from './middleware/errors.js';
 import { authRouter } from './modules/auth/auth.routes.js';
@@ -14,11 +13,15 @@ import { calendarRouter } from './modules/calendar/calendar.routes.js';
 import { notificationsRouter } from './modules/notifications/notifications.routes.js';
 import { notificationProcessorRouter } from './modules/notifications/notification-processor.routes.js';
 
-const createHelmet = helmetModule.default as unknown as () => express.RequestHandler;
-
 export const app = express();
 app.disable('x-powered-by');
-app.use(createHelmet());
+app.use((_req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('Referrer-Policy', 'no-referrer');
+  res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+  next();
+});
 app.use(cors({ origin: env.WEB_URL }));
 app.use(express.json({ limit: '100kb' }));
 app.use('/health', healthRouter);
