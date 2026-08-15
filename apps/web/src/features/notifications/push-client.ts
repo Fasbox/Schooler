@@ -20,7 +20,8 @@ export async function enableWebPush() {
   if (!publicKey) throw new Error('Web Push todavía no tiene una clave VAPID configurada.');
   const permission = await window.Notification.requestPermission();
   if (permission !== 'granted') throw new Error('No se concedió el permiso de notificaciones.');
-  const registration = await navigator.serviceWorker.register('/sw.js');
+  await navigator.serviceWorker.register('/sw.js');
+  const registration = await navigator.serviceWorker.ready;
   const existing = await registration.pushManager.getSubscription();
   const subscription = existing ?? await registration.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: base64ToArrayBuffer(publicKey) });
   const json = subscription.toJSON();
